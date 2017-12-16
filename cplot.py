@@ -7,7 +7,8 @@ TODO: Allow the infinity squashing function to be customized
 TODO: Colormap functions don't handle non-2D arrays correctly
 TODO: Colorspacious doesn't quite reach white for J = 100?
 TODO: cplot(np.tan, re=(3, 3), im=(-3, 3)) division by zero
-
+TODO: Lookuptable is 8 MiB!
+TODO: Make phase rotatable?
 """
 import numpy as np
 import matplotlib.pyplot as plt
