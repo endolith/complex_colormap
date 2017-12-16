@@ -4,7 +4,6 @@ Created on Thu Mar 14 2013
 Use lookup tables to color pictures
 
 TODO: Allow the infinity squashing function to be customized
-TODO: Colormap functions don't handle non-2D arrays correctly
 TODO: Colorspacious doesn't quite reach white for J = 100?
 TODO: cplot(np.tan, re=(3, 3), im=(-3, 3)) division by zero
 TODO: Lookup table is 8 MiB!
@@ -85,7 +84,7 @@ def const_chroma_colormap(z, nancolor='gray'):
 
     # So if z is (vertical, horizontal)
     # imshow expects shape of (vertical, horizontal, 3)
-    JCh = np.dstack((J, C, h))
+    JCh = np.stack((J, C, h), axis=-1)
 
     rgb = cspace_convert(JCh, new_space, "sRGB1")
 
@@ -154,7 +153,7 @@ def max_chroma_colormap(z, nancolor='gray'):
 
     # So if z is (vertical, horizontal)
     # imshow expects shape of (vertical, horizontal, 3)
-    JCh = np.dstack((J, C, h))
+    JCh = np.stack((J, C, h), axis=-1)
 
     # TODO: Don't convert NaNs and get warnings
 
