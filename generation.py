@@ -156,10 +156,6 @@ if __name__ == '__main__':
             print('J =', J)
             for m, h in enumerate(h_vals):
                 C = find_wall(J, h)
-                if J == 0:
-                    C = 0
-                if J == 100:
-                    C = 0
                 C_lut[n, m] = C
 
         return C_lut
