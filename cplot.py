@@ -7,7 +7,7 @@ TODO: Allow the infinity squashing function to be customized
 TODO: Colormap functions don't handle non-2D arrays correctly
 TODO: Colorspacious doesn't quite reach white for J = 100?
 TODO: cplot(np.tan, re=(3, 3), im=(-3, 3)) division by zero
-TODO: Lookuptable is 8 MiB!
+TODO: Lookup table is 8 MiB!
 TODO: Make phase rotatable?
 """
 import numpy as np
@@ -261,8 +261,8 @@ def cplot(f, re=(-5, 5), im=(-5, 5), points=160000, color='const', file=None,
     w = color(f(z))
 
     axes.imshow(w, extent=(re_lo, re_hi, im_lo, im_hi), origin='lower')
-    axes.set_xlabel('Re(z)')
-    axes.set_ylabel('Im(z)')
+    axes.set_xlabel('$\operatorname{Re}(z)$')
+    axes.set_ylabel('$\operatorname{Im}(z)$')
     if fig:
         if file:
             plt.savefig(file, dpi=dpi)
@@ -272,7 +272,7 @@ def cplot(f, re=(-5, 5), im=(-5, 5), points=160000, color='const', file=None,
 
 if __name__ == '__main__':
     cplot(lambda z: z, color='max')
-    plt.title('f(z) = z')
+    plt.title('$f(z) = z$')
 
     cplot(lambda z: z, color='const')
-    plt.title('f(z) = z')
+    plt.title('$f(z) = z$')
