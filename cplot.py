@@ -173,6 +173,9 @@ def cplot(f, re=(-5, 5), im=(-5, 5), points=160000, color='const', file=None,
     r"""
     Plot a complex function using lightness for magnitude and hue for phase
 
+    Plots the given complex-valued function `f` over a rectangular part
+    of the complex plane specified by the pairs of intervals `re` and `im`.
+
     Parameters
     ----------
     f : callable
@@ -184,12 +187,30 @@ def cplot(f, re=(-5, 5), im=(-5, 5), points=160000, color='const', file=None,
     points : int
         Total number of points in the image. (e.g. points=9 produces a 3x3
         image)
-    color : {'max', 'const'}
+    color : {'max', 'const', callable}
         Which colormap to use.
         If ``'max'``, maximize chroma for each point, which produces vivid
         images with misleading lightness.
         If ``'const'``, then the chroma is held constant for a given lightness,
         producing images with accurate amplitude, but muted colors.
+        A custom function can also be supplied.  See Notes.
+    file : string or None
+        Filename to save the figure to.  If None, figure is displayed on
+        screen.
+    dpi : [ None | scalar > 0 | ‘figure’]
+        The resolution in dots per inch for the saved file. If None it will
+        default to the value savefig.dpi in the matplotlibrc file. If
+        ‘figure’, it will set the dpi to be the value of the figure.
+    axes : mmatplotlib.axes._subplots.AxesSubplot
+        An existing axes object in which to place the plot.
+
+    Notes
+    -----
+    By default, the complex argument (phase) is shown as color (hue) and
+    the magnitude is show as lightness. You can also supply a custom color
+    function (`color`). This function should take an ndarray of complex
+    numbers of shape (n, m) as input and return an ndarray of RGB 3-tuples of
+    shape (n, m, 3), containing floats in the range 0.0-1.0.
 
     Examples
     --------
@@ -221,13 +242,12 @@ def cplot(f, re=(-5, 5), im=(-5, 5), points=160000, color='const', file=None,
     >>> cplot(func)
     >>> plt.title(r'$f(z) = \sqrt{16 - ℜ(z)^2 - ℑ(z)^2}$')
 
-    or customize the NaN color:
+    or customize the NaN color by using a custom color function:
 
     >>> nancolor = 'xkcd:radioactive green'
     >>> color_func = lambda z: const_chroma_colormap(z, nancolor=nancolor)
     >>> cplot(func, color=color_func)
     >>> plt.title(r'$f(z) = \sqrt{16 - ℜ(z)^2 - ℑ(z)^2}$')
-
     """
     # Modified from mpmath.cplot
     if color == 'const':
