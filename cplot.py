@@ -202,8 +202,13 @@ def cplot(f, re=(-5, 5), im=(-5, 5), points=160000, color='const', file=None,
         The resolution in dots per inch for the saved file. If None it will
         default to the value savefig.dpi in the matplotlibrc file. If
         ‘figure’, it will set the dpi to be the value of the figure.
-    axes : mmatplotlib.axes._subplots.AxesSubplot
+    axes : matplotlib.axes._subplots.AxesSubplot
         An existing axes object in which to place the plot.
+
+    Returns
+    -------
+    axes : matplotlib.axes._subplots.AxesSubplot
+        Axes object of the plot
 
     Notes
     -----
@@ -288,6 +293,8 @@ def cplot(f, re=(-5, 5), im=(-5, 5), points=160000, color='const', file=None,
             plt.savefig(file, dpi=dpi)
         else:
             plt.show()
+
+    return axes
 
 
 if __name__ == '__main__':
