@@ -15,11 +15,12 @@ from scipy.interpolate import interp1d, RectBivariateSpline
 from matplotlib.colors import colorConverter
 from colorspacious import cspace_convert
 import numbers
+import os
 
 new_space = "JCh"
 
 # 2D C vs (J, h)
-C_lut = np.load('C_lut.npy')
+C_lut = np.load(os.path.join(os.path.dirname(__file__), 'C_lut.npy'))
 
 # 1D C vs J
 C_lut_1d = C_lut.min(1)
