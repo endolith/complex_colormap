@@ -74,7 +74,7 @@ def const_chroma_colormap(z, nancolor='gray'):
     # TODO: Somewhere between 98.24 and 98.34, the min C drops close to 0, so
     # cut it off before 100?  Instead of having multiple J values that map to
     # white.  No such problem at black end.  Probably varies with illuminant?
-    J = (1.0 - (1/(1.0+np.abs(z)**0.3))) * 100
+    J = (1.0 - (1 / (1.0 + np.abs(z)**0.3))) * 100
 
     # h is from 0 to 360 degrees
     h = np.angle(z, deg=True)
@@ -136,7 +136,7 @@ def max_chroma_colormap(z, nancolor='gray'):
     # Input magnitude is 0 to inf and phase 0 to 2pi
 
     # J is from 0 to 100
-    J = (1.0 - (1/(1.0+np.abs(z)**0.3))) * 100
+    J = (1.0 - (1 / (1.0 + np.abs(z)**0.3))) * 100
 
     # h is from 0 to 360 degrees
     h = np.angle(z, deg=True)
@@ -282,7 +282,7 @@ def cplot(f, re=(-5, 5), im=(-5, 5), points=160000, color='const', file=None,
     # Test with these plots:
     #    cplot(np.vectorize(lambda z: z if z.real < 0 else 0))
     #    cplot(np.vectorize(lambda z: z if z.imag < 0 else 0))
-    z = x[None, :] + 1j*y[:, None]
+    z = x[None, :] + 1j * y[:, None]
     w = color(f(z))
 
     axes.imshow(w, extent=(re_lo, re_hi, im_lo, im_hi), origin='lower')
