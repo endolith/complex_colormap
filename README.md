@@ -1,11 +1,11 @@
 # complex_colormap
-Plot complex functions in perceptually-uniform colorspace
+Plot complex functions in perceptually-uniform color space
 
-This generates a bivariate colormap that adjusts both lightness and hue, for
+This generates a bivariate color map that adjusts both lightness and hue, for
 plotting complex functions, the magnitude and phase of signals, etc.
 
 Magnitude is mapped to lightness and phase angle is mapped to hue in a
-perceptually-uniform colorspace (previously
+perceptually-uniform color space (previously
 [LCh](https://en.wikipedia.org/wiki/Lab_color_space#Cylindrical_representation:_CIELCh_or_CIEHLC),
 now 
 [CIECAM02's JCh](https://en.wikipedia.org/wiki/CIECAM02#Appearance_correlates)).
