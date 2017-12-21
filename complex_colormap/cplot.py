@@ -11,6 +11,7 @@ TODO: Make phase rotatable?
 """
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.image
 from scipy.interpolate import interp1d, RectBivariateSpline
 from matplotlib.colors import colorConverter
 from colorspacious import cspace_convert
@@ -285,9 +286,13 @@ def cplot(f, re=(-5, 5), im=(-5, 5), points=160000, color='const', file=None,
     z = x[None, :] + 1j * y[:, None]
     w = color(f(z))
 
-    axes.imshow(w, extent=(re_lo, re_hi, im_lo, im_hi), origin='lower')
-    axes.set_xlabel('$\operatorname{Re}(z)$')
-    axes.set_ylabel('$\operatorname{Im}(z)$')
+    if type(axes) == matplotlib.image.AxesImage:
+        axes.set_data(w)
+        axes = axes.axes
+    else:
+        axes.imshow(w, extent=(re_lo, re_hi, im_lo, im_hi), origin='lower')
+        axes.set_xlabel('$\operatorname{Re}(z)$')
+        axes.set_ylabel('$\operatorname{Im}(z)$')
     if fig:
         if file:
             plt.savefig(file, dpi=dpi)
