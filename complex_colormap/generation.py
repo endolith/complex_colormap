@@ -120,37 +120,27 @@ if __name__ == '__main__':
 
     # Lightness includes 0 (black) and 100 (white)
     J_vals = np.linspace(0, 100, J_lutsize, endpoint=True)
-    # Hue is cyclic, where 360 degrees = 0 degrees
+
+    # Hue is cyclic, where 360 degrees = 0 degrees (red)
     h_vals = np.linspace(0, 360, h_lutsize, endpoint=False)
 
     def create_max_chroma_lut():
-        print('Generating max chroma colormap')
-        max_chroma_lut = np.ones((J_lutsize, h_lutsize, 3))
+        print('Generating max chroma colormap lookup table')
 
-        for n, J in enumerate(J_vals):
-            print('J =', J)
-            for m, h in enumerate(h_vals):
-                C = find_wall(J, h)
-                if J == 0:
-                    rgb = np.zeros(3)
-                if J == 100:
-                    rgb = np.ones(3)
-                else:
-                    rgb = cspace_convert((J, C, h), new_space, "sRGB1")
-                assert -0.01 <= rgb.min()
-                assert rgb.max() <= 1.02
-                max_chroma_lut[n, m] = rgb
+        J, h = np.meshgrid(J_vals, h_vals, copy=False, indexing='ij')
+        C = C_lut
+        JCh = np.stack((J, C, h), axis=-1)
+        max_chroma_lut = cspace_convert(JCh, new_space, "sRGB1")
+
+        # Check that we're using entire RGB range but not exceeding it
+        assert -0.01 < max_chroma_lut.min() < 0.1
+        assert 0.9 < max_chroma_lut.max() < 1.02
 
         return max_chroma_lut.clip(0, 1)
 
     def create_C_lut():
         print('Generating max chroma lookup table')
         C_lut = np.ones((J_lutsize, h_lutsize))
-
-        # Lightness includes 0 (black) and 100 (white)
-        J_vals = np.linspace(0, 100, J_lutsize, endpoint=True)
-        # Hue is cyclic, where 360 degrees = 0 degrees (= red??)
-        h_vals = np.linspace(0, 360, h_lutsize, endpoint=False)
 
         for n, J in enumerate(J_vals):
             print('J =', J)
@@ -161,34 +151,17 @@ if __name__ == '__main__':
         return C_lut
 
     def create_pastel_lut():
-        print('Generating constant chroma colormap')
-        pastel_chroma_lut = np.ones((J_lutsize, h_lutsize, 3))
-        C_lut_1d = C_lut.min(1)
+        print('Generating constant chroma colormap lookup table')
+        J, h = np.meshgrid(J_vals, h_vals, copy=False, indexing='ij')
+        C = np.tile(C_lut.min(1), (h_lutsize, 1)).T
+        JCh = np.stack((J, C, h), axis=-1)
+        pastel_chroma_lut = cspace_convert(JCh, new_space, "sRGB1")
 
-        for n, J in enumerate(J_vals):
-            C = C_lut_1d[n]
-            print('J =', J, 'C = ', C)
-            for m, h in enumerate(h_vals):
-                rgb = cspace_convert((J, C, h), new_space, "sRGB1")
-                assert -0.01 <= rgb.min()
-                assert rgb.max() <= 1.02
-                pastel_chroma_lut[n, m] = rgb
+        # Check that we're using entire RGB range but not exceeding it
+        assert -0.01 < pastel_chroma_lut.min() < 0.1
+        assert 0.9 < pastel_chroma_lut.max() < 1.02
 
-        return pastel_chroma_lut
-
-    try:
-        max_chroma_lut = np.load('max_chroma_lut.npy')
-    except FileNotFoundError:
-        max_chroma_lut = create_max_chroma_lut()
-        np.save('max_chroma_lut.npy', max_chroma_lut)
-
-    plt.figure('Max chroma')
-    plt.imshow(max_chroma_lut.clip(0, 1), origin='lower',
-               interpolation='bilinear', extent=(0, 360, 0, 100))
-    plt.xlabel('h')
-    plt.ylabel('J')
-    plt.axis('auto')
-    plt.tight_layout()
+        return pastel_chroma_lut.clip(0, 1)
 
     try:
         C_lut = np.load('C_lut.npy')
@@ -210,11 +183,17 @@ if __name__ == '__main__':
     ax2.axis('auto')
     plt.tight_layout()
 
-    try:
-        pastel_chroma_lut = np.load('pastel_lut.npy')
-    except FileNotFoundError:
-        pastel_chroma_lut = create_pastel_lut()
-        np.save('pastel_lut.npy', pastel_chroma_lut)
+    max_chroma_lut = create_max_chroma_lut()
+
+    plt.figure('Max chroma')
+    plt.imshow(max_chroma_lut.clip(0, 1), origin='lower',
+               interpolation='bilinear', extent=(0, 360, 0, 100))
+    plt.xlabel('h')
+    plt.ylabel('J')
+    plt.axis('auto')
+    plt.tight_layout()
+
+    pastel_chroma_lut = create_pastel_lut()
 
     plt.figure('Constant chroma')
     plt.imshow(pastel_chroma_lut.clip(0, 1), origin='lower',
