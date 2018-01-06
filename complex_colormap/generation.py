@@ -150,18 +150,18 @@ if __name__ == '__main__':
 
         return C_lut
 
-    def create_pastel_lut():
+    def create_const_chroma_lut():
         print('Generating constant chroma colormap lookup table')
         J, h = np.meshgrid(J_vals, h_vals, copy=False, indexing='ij')
         C = np.tile(C_lut.min(1), (h_lutsize, 1)).T
         JCh = np.stack((J, C, h), axis=-1)
-        pastel_chroma_lut = cspace_convert(JCh, new_space, "sRGB1")
+        const_chroma_lut = cspace_convert(JCh, new_space, "sRGB1")
 
         # Check that we're using entire RGB range but not exceeding it
-        assert -0.01 < pastel_chroma_lut.min() < 0.1
-        assert 0.9 < pastel_chroma_lut.max() < 1.02
+        assert -0.01 < const_chroma_lut.min() < 0.1
+        assert 0.9 < const_chroma_lut.max() < 1.02
 
-        return pastel_chroma_lut.clip(0, 1)
+        return const_chroma_lut.clip(0, 1)
 
     try:
         C_lut = np.load('C_lut.npy')
@@ -193,10 +193,10 @@ if __name__ == '__main__':
     plt.axis('auto')
     plt.tight_layout()
 
-    pastel_chroma_lut = create_pastel_lut()
+    const_chroma_lut = create_const_chroma_lut()
 
     plt.figure('Constant chroma')
-    plt.imshow(pastel_chroma_lut.clip(0, 1), origin='lower',
+    plt.imshow(const_chroma_lut.clip(0, 1), origin='lower',
                interpolation='bilinear', extent=(0, 360, 0, 100))
     plt.xlabel('h')
     plt.ylabel('J')
