@@ -118,7 +118,7 @@ if __name__ == '__main__':
     J_lutsize = 1024
     h_lutsize = 1024
 
-    # Lightness includes 0 (black) and 100 (white)
+    # Lightness includes 0 (black) to 100 (white)
     J_vals = np.linspace(0, 100, J_lutsize, endpoint=True)
 
     # Hue is cyclic, where 360 degrees = 0 degrees (red)
@@ -165,6 +165,8 @@ if __name__ == '__main__':
 
     try:
         C_lut = np.load('C_lut.npy')
+        print('Loaded chroma lookup table '
+              'of {} J by {} h'.format(C_lut.shape[0], C_lut.shape[1]))
     except FileNotFoundError:
         C_lut = create_C_lut()
         np.save('C_lut.npy', C_lut)
