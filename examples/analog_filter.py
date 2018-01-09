@@ -23,7 +23,7 @@ def splane_eval(s):
 
 gridspec_kw = {'width_ratios': [3, 1, 1]}
 fig, (ax_cplot, ax_fr, ax_ph) = plt.subplots(1, 3, sharey=True,
-                                             figsize=(9, 5),
+                                             figsize=(8.8, 5),
                                              gridspec_kw=gridspec_kw)
 cplot(splane_eval, re=(-r, r), im=(-r, r), axes=ax_cplot)
 ax_cplot.set_xlabel('$\sigma$')
@@ -33,13 +33,14 @@ ax_cplot.axvline(0.5, color='white', alpha=0.15)
 ax_cplot.set_title('S plane')
 ax_cplot.axis('equal')
 
-w, h = freqs_zpk(z, p, k, np.linspace(-r, r, 300))
+w, h = freqs_zpk(z, p, k, np.linspace(-r, r, 500))
 
 ax_fr.plot(abs(h), w)
 ax_fr.invert_xaxis()
 ax_fr.yaxis.tick_right()
 ax_fr.label_outer()
 ax_fr.set_xlabel('Magnitude')
+ax_fr.grid(True, which='both')
 
 ax_ph.plot(np.rad2deg(np.angle(h)), w)
 ax_ph.invert_xaxis()
@@ -47,5 +48,7 @@ ax_ph.yaxis.tick_right()
 ax_ph.set_xlabel('Phase [degrees]')
 ax_ph.set_ylabel('Frequency [rad/s]')
 ax_ph.yaxis.set_label_position("right")
+ax_ph.grid(True, which='both')
+ax_ph.margins(0.05, 0)
 
 plt.tight_layout()
