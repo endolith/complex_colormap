@@ -1,0 +1,4 @@
+colorspacious
+matplotlib
+numpy
+scipy
