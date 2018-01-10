@@ -8,7 +8,7 @@ from scipy.signal import butter, freqs_zpk
 import matplotlib.pyplot as plt
 
 f_c = 100  # rad/s
-r = 150  # rad/s
+r = 200  # rad/s
 
 z, p, k = butter(3, f_c, btype='hp', analog=True, output='zpk')
 
@@ -37,14 +37,13 @@ w, h = freqs_zpk(z, p, k, np.linspace(-r, r, 500))
 
 ax_fr.plot(abs(h), w)
 ax_fr.invert_xaxis()
-ax_fr.yaxis.tick_right()
-ax_fr.label_outer()
+ax_fr.tick_params(axis='y', left='off', right='on')
 ax_fr.set_xlabel('Magnitude')
 ax_fr.grid(True, which='both')
 
 ax_ph.plot(np.rad2deg(np.angle(h)), w)
 ax_ph.invert_xaxis()
-ax_ph.yaxis.tick_right()
+ax_ph.tick_params(axis='y', left='off', right='on', labelright='on')
 ax_ph.set_xlabel('Phase [degrees]')
 ax_ph.set_ylabel('Frequency [rad/s]')
 ax_ph.yaxis.set_label_position("right")
