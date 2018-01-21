@@ -32,6 +32,13 @@ produces misleading streaks.
 ![f(z) = z](https://c1.staticflickr.com/5/4689/39058424882_bc4d9148a9_o.png)
 ![f(z) = sin(z)](https://c1.staticflickr.com/5/4565/39058424742_8d33ea9f38_o.png)
 
+#### Example
+Use constant-chroma map to visualize poles and zeros of an analog bandpass filter,
+with accompanying magnitude and phase plots along jω axis, and a log-dB plot of
+magnitude for comparison:
+
+[![bandpass filter](https://c1.staticflickr.com/5/4743/39109387514_b78745ecf2_z.jpg)](https://flic.kr/p/22zXQmJ)
+
 ### Distribution
 
 To create a new release
