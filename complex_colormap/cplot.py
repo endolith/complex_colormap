@@ -23,8 +23,18 @@ new_space = "JCh"
 # 2D C vs (J, h)
 C_lut = np.load(os.path.join(os.path.dirname(__file__), 'C_lut.npy'))
 
+# TODO: -360 to +360 is overkill for -180 to +180, just need a little extra
+max_J_vals = np.linspace(0, 100, C_lut.shape[0], endpoint=True)
+max_h_vals = np.linspace(-360, 0, C_lut.shape[1], endpoint=False)
+max_h_vals = np.concatenate((max_h_vals, max_h_vals + 360))
+max_interpolator = RectBivariateSpline(max_J_vals, max_h_vals,
+                                       np.tile(C_lut, 2))
+
 # 1D C vs J
 C_lut_1d = C_lut.min(1)
+
+const_J_vals = np.linspace(0, 100, len(C_lut_1d), endpoint=True)
+const_interpolator = interp1d(const_J_vals, C_lut_1d, kind='linear')
 
 
 def to_rgb(color):
@@ -80,9 +90,7 @@ def const_chroma_colormap(z, nancolor='gray'):
     # h is from 0 to 360 degrees
     h = np.angle(z, deg=True)
 
-    J_vals = np.linspace(0, 100, len(C_lut_1d), endpoint=True)
-    interpolator = interp1d(J_vals, C_lut_1d, kind='linear')
-    C = interpolator(J)
+    C = const_interpolator(J)
 
     # So if z is (vertical, horizontal)
     # imshow expects shape of (vertical, horizontal, 3)
@@ -145,13 +153,7 @@ def max_chroma_colormap(z, nancolor='gray'):
     # TODO: Don't interpolate NaNs and get warnings
 
     # 2D interpolation of C lookup table
-    J_vals = np.linspace(0, 100, C_lut.shape[0], endpoint=True)
-    h_vals = np.linspace(-360, 0, C_lut.shape[1], endpoint=False)
-    h_vals = np.concatenate((h_vals, h_vals + 360))
-    interpolator = RectBivariateSpline(J_vals, h_vals, np.tile(C_lut, 2))
-    C = interpolator(J, h, grid=False)
-
-    # TODO: -360 to +360 is overkill for -180 to +180, just need a little extra
+    C = max_interpolator(J, h, grid=False)
 
     # So if z is (vertical, horizontal)
     # imshow expects shape of (vertical, horizontal, 3)
