@@ -44,12 +44,14 @@ def to_rgb(color):
         return colorConverter.to_rgb(color)
 
 
+# TODO suppress RuntimeWarning: invalid value
+
 def const_chroma_colormap(z, nancolor='gray'):
     """
     Map complex value to color, with constant chroma at each lightness
 
     Magnitude is represented by lightness and angle is represented by hue.
-    The interval [0, ∞) is mapped to lightness [0, 100].
+    The interval [0, ∞] is mapped to lightness [0, 100].
 
     Parameters
     ----------
@@ -58,7 +60,8 @@ def const_chroma_colormap(z, nancolor='gray'):
     nancolor
         Color used to represent NaNs.  Can be any valid matplotlib color,
         such as ``'k'``, ``'deeppink'``, ``'0.5'`` [gray],
-        ``(1.0, 0.5, 0.0)`` [orange], etc.
+        ``(1.0, 0.5, 0.0)`` [orange], etc. Defaults to gray (which cannot
+        appear otherwise).
 
     Returns
     -------
@@ -68,10 +71,9 @@ def const_chroma_colormap(z, nancolor='gray'):
 
     Examples
     --------
-    A point with infinite magnitude will map to white, magnitude 0 will map to
-    black, and a point with magnitude 10 and phase of π/2 will map to a
-    pale yellow.  NaNs will map to gray by default (which is not produced
-    otherwise):
+    A point with infinite magnitude will map to white, and magnitude 0 will
+    map to black.  A point with magnitude 10 and phase of π/2 will map to a
+    pale yellow.  NaNs will map to gray by default:
 
     >>> const_chroma_colormap([[np.inf, 0, 10j, np.nan]])
     array([[[ 1.   ,  1.   ,  1.   ],
@@ -79,20 +81,21 @@ def const_chroma_colormap(z, nancolor='gray'):
             [ 0.824,  0.706,  0.314],
             [ 0.502,  0.502,  0.502]]])
     """
-    # Input magnitude is 0 to inf and phase 0 to 2pi
+    # TODO: Infinity squashing curve should be customizable
 
-    # J is from 0 to 100
     # TODO: Somewhere between 98.24 and 98.34, the min C drops close to 0, so
     # cut it off before 100?  Instead of having multiple J values that map to
     # white.  No such problem at black end.  Probably varies with illuminant?
+
+    # Map magnitude in [0, ∞] to J in [0, 100]
     J = (1.0 - (1 / (1.0 + np.abs(z)**0.3))) * 100
 
-    # h is from 0 to 360 degrees
+    # Map angle in [0, 2π) to hue h in [0, 360)
     h = np.angle(z, deg=True)
 
     C = const_interpolator(J)
 
-    # So if z is (vertical, horizontal)
+    # So if z is (vertical, horizontal), then
     # imshow expects shape of (vertical, horizontal, 3)
     JCh = np.stack((J, C, h), axis=-1)
 
@@ -112,7 +115,7 @@ def max_chroma_colormap(z, nancolor='gray'):
     Map complex value to color, with maximum chroma at each lightness
 
     Magnitude is represented by lightness and angle is represented by hue.
-    The interval [0, ∞) is mapped to lightness [0, 100].
+    The interval [0, ∞] is mapped to lightness [0, 100].
 
     Parameters
     ----------
@@ -131,10 +134,9 @@ def max_chroma_colormap(z, nancolor='gray'):
 
     Examples
     --------
-    A point with infinite magnitude will map to white, magnitude 0 will map to
-    black, and a point with magnitude 10 and phase of π/2 will map to a
-    saturated yellow.  NaNs will map to gray by default (which is not produced
-    otherwise):
+    A point with infinite magnitude will map to white, and magnitude 0 will
+    map to black.  A point with magnitude 10 and phase of π/2 will map to a
+    saturated yellow.  NaNs will map to gray by default:
 
     >>> max_chroma_colormap([[np.inf, 0, 10j, np.nan]])
     array([[[ 1.   ,  1.   ,  1.   ],
@@ -142,12 +144,10 @@ def max_chroma_colormap(z, nancolor='gray'):
             [ 0.863,  0.694,  0.   ],
             [ 0.502,  0.502,  0.502]]])
     """
-    # Input magnitude is 0 to inf and phase 0 to 2pi
-
-    # J is from 0 to 100
+    # Map magnitude in [0, ∞] to J in [0, 100]
     J = (1.0 - (1 / (1.0 + np.abs(z)**0.3))) * 100
 
-    # h is from 0 to 360 degrees
+    # Map angle in [0, 2π) to hue h in [0, 360)
     h = np.angle(z, deg=True)
 
     # TODO: Don't interpolate NaNs and get warnings
@@ -155,12 +155,11 @@ def max_chroma_colormap(z, nancolor='gray'):
     # 2D interpolation of C lookup table
     C = max_interpolator(J, h, grid=False)
 
-    # So if z is (vertical, horizontal)
+    # So if z is (vertical, horizontal), then
     # imshow expects shape of (vertical, horizontal, 3)
     JCh = np.stack((J, C, h), axis=-1)
 
     # TODO: Don't convert NaNs and get warnings
-
     rgb = cspace_convert(JCh, new_space, "sRGB1")
 
     # White for infinity (colorspacious doesn't quite reach it for J = 100)
