@@ -19,7 +19,7 @@ for *any* hue, and then use that for every other hue. This produces images with
 accurate magnitude variation, but the colors are muted and more difficult to
 perceive.
 
-[![constant chroma colormap](https://c1.staticflickr.com/5/4646/39058425412_0e83cf740f_n.jpg)](https://flic.kr/p/22vsD6N)
+[![constant chroma colormap](https://live.staticflickr.com/4646/39058425412_67d203f0b8.jpg)](https://flic.kr/p/22vsD6N)
 ![f(z) = z](https://c1.staticflickr.com/5/4682/39058425052_ff82772542_o.png)
 ![f(z) = sin(z)](https://c1.staticflickr.com/5/4575/39058424492_3210b35fe6_o.png)
 
@@ -28,7 +28,7 @@ For each lightness `J` and hue `h`, find the maximum chroma that can be
 represented in RGB.  This produces vivid images, but the chroma variation
 produces misleading streaks.
 
-[![maximum chroma colormap](https://c1.staticflickr.com/5/4599/39058425252_ae2c812dd9_n.jpg)](https://flic.kr/p/22vsD43)
+[![maximum chroma colormap](https://live.staticflickr.com/4599/39058425252_0ea7a3f62a.jpg)](https://flic.kr/p/22vsD43)
 ![f(z) = z](https://c1.staticflickr.com/5/4689/39058424882_bc4d9148a9_o.png)
 ![f(z) = sin(z)](https://c1.staticflickr.com/5/4565/39058424742_8d33ea9f38_o.png)
 
