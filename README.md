@@ -15,9 +15,9 @@ There are currently two ways to handle the chroma information:
 #### Constant chroma (`'const'`)
 
 For each lightness `J`, find the maximum chroma that can be represented in RGB
-for *any* hue, and then use that for every other hue. This produces images with
-accurate magnitude variation, but the colors are muted and more difficult to
-perceive.
+for *any* hue, and then use that for every *other* hue. This produces images with
+perceptually accurate magnitude variation, but the colors are muted and more 
+difficult to perceive.
 
 [![constant chroma colormap](https://live.staticflickr.com/4646/39058425412_67d203f0b8.jpg)](https://flic.kr/p/22vsD6N)
 ![f(z) = z](https://c1.staticflickr.com/5/4682/39058425052_ff82772542_o.png)
@@ -26,7 +26,7 @@ perceive.
 #### Maximum chroma (`'max'`)
 For each lightness `J` and hue `h`, find the maximum chroma that can be
 represented in RGB.  This produces vivid images, but the chroma variation
-produces misleading streaks.
+produces misleading streaks as it makes sharp angles around the RGB edges.
 
 [![maximum chroma colormap](https://live.staticflickr.com/4599/39058425252_0ea7a3f62a.jpg)](https://flic.kr/p/22vsD43)
 ![f(z) = z](https://c1.staticflickr.com/5/4689/39058424882_bc4d9148a9_o.png)
