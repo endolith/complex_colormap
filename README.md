@@ -6,7 +6,7 @@ plotting complex functions, the magnitude and phase of signals, etc.
 
 Magnitude is mapped to lightness and phase angle is mapped to hue in a
 perceptually-uniform color space (previously
-[LCh](https://en.wikipedia.org/wiki/Lab_color_space#Cylindrical_representation:_CIELCh_or_CIEHLC),
+[LCh](https://en.wikipedia.org/wiki/CIELAB_color_space#Cylindrical_model),
 now 
 [CIECAM02's JCh](https://en.wikipedia.org/wiki/CIECAM02#Appearance_correlates)).
 
