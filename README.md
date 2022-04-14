@@ -10,9 +10,27 @@ perceptually-uniform color space (previously
 now 
 [CIECAM02's JCh](https://en.wikipedia.org/wiki/CIECAM02#Appearance_correlates)).
 
+## Usage
+
+Since matplotlib doesn't handle 2D colormaps natively, it's currently implemented 
+as a `cplot` function that adds to an `axes` object, which you can then apply 
+further MPL features to:
+
+```py
+ax_cplot = fig.add_subplot()
+cplot(splane_eval, re=(-r, r), im=(-r, r), axes=ax_cplot)
+ax_cplot.set_xlabel('$\sigma$')
+ax_cplot.axis('equal')
+…
+```
+
+See [the example script](/examples/analog_filter.py).
+
+## Color mapping
+
 There are currently two ways to handle the chroma information:
 
-#### Constant chroma (`'const'`)
+### Constant chroma (`'const'`)
 
 For each lightness `J`, find the maximum chroma that can be represented in RGB
 for *any* hue, and then use that for every *other* hue. This produces images with
@@ -23,7 +41,7 @@ difficult to perceive.
 ![f(z) = z](https://c1.staticflickr.com/5/4682/39058425052_ff82772542_o.png)
 ![f(z) = sin(z)](https://c1.staticflickr.com/5/4575/39058424492_3210b35fe6_o.png)
 
-#### Maximum chroma (`'max'`)
+### Maximum chroma (`'max'`)
 For each lightness `J` and hue `h`, find the maximum chroma that can be
 represented in RGB.  This produces vivid images, but the chroma variation
 produces misleading streaks as it makes sharp angles around the RGB edges.
@@ -32,14 +50,14 @@ produces misleading streaks as it makes sharp angles around the RGB edges.
 ![f(z) = z](https://c1.staticflickr.com/5/4689/39058424882_bc4d9148a9_o.png)
 ![f(z) = sin(z)](https://c1.staticflickr.com/5/4565/39058424742_8d33ea9f38_o.png)
 
-#### Example
+## Example
 Use constant-chroma map to visualize poles and zeros of an analog bandpass filter,
 with accompanying magnitude and phase plots along jω axis, and a log-dB plot of
 magnitude for comparison:
 
 [![bandpass filter](https://c1.staticflickr.com/5/4743/39109387514_b78745ecf2_z.jpg)](https://flic.kr/p/22zXQmJ)
 
-### Distribution
+## Distribution
 
 To create a new release
 
@@ -50,6 +68,6 @@ To create a new release
     $ make publish
     ```
 
-### License
+## License
 
 complex_colormap is published under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).
