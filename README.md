@@ -51,7 +51,8 @@ produces misleading streaks as it makes sharp angles around the RGB edges.
 ![f(z) = sin(z)](https://c1.staticflickr.com/5/4565/39058424742_8d33ea9f38_o.png)
 
 ## Example
-Use constant-chroma map to visualize poles and zeros of an analog bandpass filter,
+[analog_filter.py](/examples/analog_filter.py) uses a constant-chroma map to 
+visualize the poles and zeros of an analog bandpass filter,
 with accompanying magnitude and phase plots along jω axis, and a log-dB plot of
 magnitude for comparison:
 
