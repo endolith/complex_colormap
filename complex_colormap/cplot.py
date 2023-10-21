@@ -21,7 +21,20 @@ import os
 new_space = "JCh"
 
 # 2D C vs (J, h)
-C_lut = np.load(os.path.join(os.path.dirname(__file__), 'C_lut.npy'))
+loadpath = os.path.join(os.path.dirname(__file__), 'C_lut.npy')
+if not os.path.isfile(loadpath):
+    # if not generated yet, generate it
+    import sys
+    from subprocess import PIPE, Popen
+    # run file while printing outputs in real-time
+    cmd = [sys.executable, '-u',
+           os.path.join(os.path.dirname(__file__), 'generation.py')]
+    with Popen(cmd, bufsize=1, stdout=PIPE, text=True) as sub:
+        for line in sub.stdout:
+            print(line, end='')
+# load
+C_lut = np.load(loadpath)
+
 
 # TODO: -360 to +360 is overkill for -180 to +180, just need a little extra
 max_J_vals = np.linspace(0, 100, C_lut.shape[0], endpoint=True)
@@ -172,7 +185,7 @@ def max_chroma_colormap(z, nancolor='gray'):
 
 
 def cplot(f, re=(-5, 5), im=(-5, 5), points=160000, color='const', file=None,
-          dpi=None, axes=None):
+          dpi=None, axes=None, title=None):
     r"""
     Plot a complex function using lightness for magnitude and hue for phase
 
@@ -206,6 +219,8 @@ def cplot(f, re=(-5, 5), im=(-5, 5), points=160000, color='const', file=None,
         ‘figure’, it will set the dpi to be the value of the figure.
     axes : matplotlib.axes._subplots.AxesSubplot
         An existing axes object in which to place the plot.
+    title : str
+        Passed to `ax.set_title`.
 
     Returns
     -------
@@ -294,6 +309,8 @@ def cplot(f, re=(-5, 5), im=(-5, 5), points=160000, color='const', file=None,
         axes.imshow(w, extent=(re_lo, re_hi, im_lo, im_hi), origin='lower')
         axes.set_xlabel('$\operatorname{Re}(z)$')
         axes.set_ylabel('$\operatorname{Im}(z)$')
+    if title:
+        axes.set_title(title)
     if fig:
         if file:
             plt.savefig(file, dpi=dpi)
@@ -304,8 +321,6 @@ def cplot(f, re=(-5, 5), im=(-5, 5), points=160000, color='const', file=None,
 
 
 if __name__ == '__main__':
-    cplot(lambda z: z, color='max')
-    plt.title('$f(z) = z$')
-
-    cplot(lambda z: z, color='const')
-    plt.title('$f(z) = z$')
+    title = '$f(z) = z$'
+    cplot(lambda z: z, title=title + ' | max',   color='max')
+    cplot(lambda z: z, title=title + ' | const', color='const')
