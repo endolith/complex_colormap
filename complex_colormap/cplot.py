@@ -21,10 +21,9 @@ import os
 new_space = "JCh"
 
 # 2D C vs (J, h)
-# if not generated yet, generate it
-try:
-    C_lut = np.load(os.path.join(os.path.dirname(__file__), 'C_lut.npy'))
-except:
+loadpath = os.path.join(os.path.dirname(__file__), 'C_lut.npy')
+if not os.path.isfile(loadpath):
+    # if not generated yet, generate it
     import sys
     from subprocess import PIPE, Popen
     # run file while printing outputs in real-time
@@ -33,6 +32,9 @@ except:
     with Popen(cmd, bufsize=1, stdout=PIPE, text=True) as sub:
         for line in sub.stdout:
             print(line, end='')
+# load
+C_lut = np.load(loadpath)
+
 
 # TODO: -360 to +360 is overkill for -180 to +180, just need a little extra
 max_J_vals = np.linspace(0, 100, C_lut.shape[0], endpoint=True)
