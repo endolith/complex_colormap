@@ -307,12 +307,27 @@ def const_chroma_colormap_mpl(N):
     """Makes colormap of size `N`, passable to `plt.imshow(cmap=)`.
     Retrieve 3D array values via `.colors`.
     """
-    N = 1024
-    J = ((1.0 - (1 / (1.0 + np.ones(N)**0.3))) * 100)[None]
+    J = (1.0 - (1 / (1.0 + np.ones((1, N))**0.3))) * 100
     h = np.linspace(-180, 180, N)[None]
     C = const_interpolator(J)
     JCh = np.stack((J, C, h), axis=-1)
     rgb = cspace_convert(JCh, new_space, 'sRGB1')[0]
+    rgb = rgb.clip(0, 1)
+
+    cm = ListedColormap(rgb)
+    return cm
+
+
+def max_chroma_colormap_mpl(N):
+    """Makes colormap of size `N`, passable to `plt.imshow(cmap=)`.
+    Retrieve 3D array values via `.colors`.
+    """
+    # Map magnitude in [0, ∞] to J in [0, 100]
+    J = (1.0 - (1 / (1.0 + np.ones((1, N))**0.3))) * 100
+    h = np.linspace(-180, 180, N)[None]
+    C = max_interpolator(J, h, grid=False)
+    JCh = np.stack((J, C, h), axis=-1)
+    rgb = cspace_convert(JCh, new_space, "sRGB1")[0]
     rgb = rgb.clip(0, 1)
 
     cm = ListedColormap(rgb)
