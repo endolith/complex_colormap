@@ -13,7 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image
 from scipy.interpolate import interp1d, RectBivariateSpline
-from matplotlib.colors import colorConverter
+from matplotlib.colors import colorConverter, ListedColormap
 from colorspacious import cspace_convert
 import numbers
 import os
@@ -301,6 +301,37 @@ def cplot(f, re=(-5, 5), im=(-5, 5), points=160000, color='const', file=None,
             plt.show()
 
     return axes
+
+
+def const_chroma_colormap_mpl(N):
+    """Makes colormap of size `N`, passable to `plt.imshow(cmap=)`.
+    Retrieve 3D array values via `.colors`.
+    """
+    J = (1.0 - (1 / (1.0 + np.ones((1, N))**0.3))) * 100
+    h = np.linspace(-180, 180, N)[None]
+    C = const_interpolator(J)
+    JCh = np.stack((J, C, h), axis=-1)
+    rgb = cspace_convert(JCh, new_space, 'sRGB1')[0]
+    rgb = rgb.clip(0, 1)
+
+    cm = ListedColormap(rgb)
+    return cm
+
+
+def max_chroma_colormap_mpl(N):
+    """Makes colormap of size `N`, passable to `plt.imshow(cmap=)`.
+    Retrieve 3D array values via `.colors`.
+    """
+    # Map magnitude in [0, ∞] to J in [0, 100]
+    J = (1.0 - (1 / (1.0 + np.ones((1, N))**0.3))) * 100
+    h = np.linspace(-180, 180, N)[None]
+    C = max_interpolator(J, h, grid=False)
+    JCh = np.stack((J, C, h), axis=-1)
+    rgb = cspace_convert(JCh, new_space, "sRGB1")[0]
+    rgb = rgb.clip(0, 1)
+
+    cm = ListedColormap(rgb)
+    return cm
 
 
 if __name__ == '__main__':
