@@ -5,11 +5,12 @@ Generate analog signal processing filter, showing:
     Magnitude plot on more typical log-log plot
 """
 
-import numpy as np
-from complex_colormap.cplot import cplot
-from scipy.signal import butter, freqs_zpk
-import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.signal import butter, freqs_zpk
+
+from complex_colormap.cplot import cplot
 
 f_c = 100  # rad/s
 r = 200  # rad/s

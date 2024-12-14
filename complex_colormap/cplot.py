@@ -9,14 +9,15 @@ TODO: cplot(np.tan, re=(3, 3), im=(-3, 3)) division by zero
 TODO: Lookup table is 8 MiB!
 TODO: Make phase rotatable?
 """
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.image
-from scipy.interpolate import interp1d, RectBivariateSpline
-from matplotlib.colors import colorConverter
-from colorspacious import cspace_convert
 import numbers
 import os
+
+import matplotlib.image
+import matplotlib.pyplot as plt
+import numpy as np
+from colorspacious import cspace_convert
+from matplotlib.colors import colorConverter
+from scipy.interpolate import RectBivariateSpline, interp1d
 
 new_space = "JCh"
 
@@ -200,10 +201,10 @@ def cplot(f, re=(-5, 5), im=(-5, 5), points=160000, color='const', file=None,
     file : string or None
         Filename to save the figure to.  If None, figure is displayed on
         screen.
-    dpi : [ None | scalar > 0 | ‘figure’]
+    dpi : [ None | scalar > 0 | 'figure']
         The resolution in dots per inch for the saved file. If None it will
         default to the value savefig.dpi in the matplotlibrc file. If
-        ‘figure’, it will set the dpi to be the value of the figure.
+        'figure', it will set the dpi to be the value of the figure.
     axes : matplotlib.axes._subplots.AxesSubplot
         An existing axes object in which to place the plot.
 

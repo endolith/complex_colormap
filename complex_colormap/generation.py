@@ -3,8 +3,8 @@ Created on Thu Mar 14 2013
 
 Generate lookup tables for 2D lightness/hue colormaps
 """
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 from colorspacious import cspace_convert
 
 new_space = "JCh"

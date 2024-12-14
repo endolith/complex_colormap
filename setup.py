@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-import os
-from setuptools import setup, find_packages
 import codecs
+import os
+
+from setuptools import find_packages, setup
 
 # https://packaging.python.org/single_source_version/
 base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -17,7 +18,7 @@ def read(fname):
         content = codecs.open(
             os.path.join(os.path.dirname(__file__), fname),
             encoding='utf-8'
-            ).read()
+        ).read()
     except Exception:
         content = ''
     return content
@@ -40,7 +41,7 @@ setup(
         'matplotlib',
         'numpy',
         'scipy',
-        ],
+    ],
     classifiers=[
         about['__status__'],
         about['__license__'],
@@ -52,5 +53,5 @@ setup(
         'Topic :: Scientific/Engineering',
         'Topic :: Scientific/Engineering :: Mathematics',
         'Topic :: Scientific/Engineering :: Physics',
-        ]
-    )
+    ]
+)
