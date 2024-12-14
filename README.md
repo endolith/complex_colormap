@@ -13,7 +13,7 @@ now
 
 ## Usage
 
-Since matplotlib doesn't handle 2D colormaps natively, it's currently implemented
+Since [matplotlib doesn't handle 2D colormaps natively](https://github.com/matplotlib/matplotlib/issues/14168), it's currently implemented
 as a `cplot` function that adds to an `axes` object, which you can then apply
 further MPL features to:
 
