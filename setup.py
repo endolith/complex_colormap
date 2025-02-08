@@ -6,17 +6,14 @@ from setuptools import find_packages, setup
 # https://packaging.python.org/single_source_version/
 base_dir = os.path.abspath(os.path.dirname(__file__))
 about = {}
-with open(os.path.join(base_dir, 'complex_colormap', '__about__.py'),
-          'rb') as f:
+with open(os.path.join(base_dir, 'complex_colormap', '__about__.py')) as f:
     exec(f.read(), about)
 
 
 def read(fname):
     try:
-        content = codecs.open(
-            os.path.join(os.path.dirname(__file__), fname),
-            encoding='utf-8'
-        ).read()
+        with open(os.path.join(os.path.dirname(__file__), fname)) as f:
+            content = f.read()
     except Exception:
         content = ''
     return content
