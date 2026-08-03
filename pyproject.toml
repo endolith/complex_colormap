@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "complex_colormap"
+dynamic = ["version"]
+description = "Color maps for complex-valued functions"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [
+    { name = "endolith", email = "endolith@gmail.com" },
+]
+keywords = ["colormap", "matplotlib", "complex", "plotting"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "colorspacious",
+    "matplotlib",
+    "numpy",
+    "scipy",
+]
+
+[project.urls]
+Homepage = "https://github.com/endolith/complex_colormap"
+Download = "https://github.com/endolith/complex_colormap/releases"
+
+[tool.hatch.version]
+path = "complex_colormap/__about__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["complex_colormap"]
