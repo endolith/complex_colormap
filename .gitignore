@@ -220,4 +220,4 @@ __marimo__/
 .streamlit/secrets.toml
 
 # Generated lookup table
-M_lut.npy
+C_lut.npy
