@@ -141,7 +141,7 @@ def max_chroma_colormap(z, nancolor='gray'):
 
     >>> max_chroma_colormap([[np.inf, 0, 10j, np.nan]])
     array([[[ 1.   ,  1.   ,  1.   ],
-            [ 0.051,  0.   ,  0.001],
+            [ 0.   ,  0.   ,  0.   ],
             [ 0.863,  0.694,  0.   ],
             [ 0.502,  0.502,  0.502]]])
     """
@@ -165,6 +165,9 @@ def max_chroma_colormap(z, nancolor='gray'):
 
     # White for infinity (colorspacious doesn't quite reach it for J = 100)
     rgb[np.isinf(z)] = (1.0, 1.0, 1.0)
+
+    # Black for zero magnitude (interpolation leaves a tiny residual chroma)
+    rgb[np.equal(z, 0)] = (0.0, 0.0, 0.0)
 
     # Color NaNs
     rgb[np.isnan(z)] = to_rgb(nancolor)
