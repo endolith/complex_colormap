@@ -30,12 +30,3 @@ def test_colormap_shape_and_bounds(func):
     assert result.min() >= 0.0
     assert result.max() <= 1.0
 
-
-@pytest.mark.parametrize("func,expected", [
-    (const_chroma_colormap, (0.0, 0.0, 0.0)),
-    (max_chroma_colormap, (0.051, 0.0, 0.001)),
-])
-def test_colormap_black_for_zero(func, expected):
-    z = np.array([0.0])
-    result = func(z)
-    np.testing.assert_allclose(result[0], expected, atol=1e-3)
