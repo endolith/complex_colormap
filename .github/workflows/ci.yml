@@ -8,8 +8,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-python@v5
         with:
@@ -17,7 +21,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -e .
+          pip install -e .[test]
 
       - name: Run tests
+        run: pytest
+
+      - name: Smoke test
         run: python complex_colormap/cplot.py

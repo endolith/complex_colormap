@@ -29,6 +29,11 @@ dependencies = [
     "scipy",
 ]
 
+[project.optional-dependencies]
+test = [
+    "pytest",
+]
+
 [project.urls]
 Homepage = "https://github.com/endolith/complex_colormap"
 Download = "https://github.com/endolith/complex_colormap/releases"
@@ -38,3 +43,4 @@ path = "complex_colormap/__about__.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["complex_colormap"]
+artifacts = ["complex_colormap/C_lut.npy"]
