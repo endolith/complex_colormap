@@ -143,7 +143,7 @@ if __name__ == '__main__':
         C_lut = np.ones((J_lutsize, h_lutsize))
 
         for n, J in enumerate(J_vals):
-            print('J =', J)
+            print('J = {:<6.4g} ({}/{})'.format(J, n + 1, len(J_vals)))
             for m, h in enumerate(h_vals):
                 C = find_wall(J, h)
                 C_lut[n, m] = C
