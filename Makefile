@@ -1,12 +1,9 @@
 VERSION=$(shell python3 -c "import complex_colormap; print(complex_colormap.__version__)")
 
+.PHONY: default tag upload publish clean test
+
 default:
 	@echo "\"make publish\"?"
-
-README.rst: README.md
-	cat README.md | sed -e 's_<img src="\([^"]*\)" width="\([^"]*\)">_![](\1){width="\2"}_g' -e 's_<p[^>]*>__g' -e 's_</p>__g' > /tmp/README.md
-	pandoc /tmp/README.md -o README.rst
-	python3 setup.py check -r -s || exit 1
 
 tag:
 	# Make sure we're on the master branch
@@ -15,14 +12,19 @@ tag:
 	git tag v$(VERSION)
 	git push --tags
 
-upload: setup.py README.rst
+upload: tag
 	@if [ "$(shell git rev-parse --abbrev-ref HEAD)" != "master" ]; then exit 1; fi
-	rm -f dist/*
-	python3 setup.py bdist_wheel --universal
+	python3 -m pip install build
+	rm -rf dist
+	python3 -m build
 	gpg --detach-sign -a dist/*
 	twine upload dist/*
 
 publish: tag upload
 
+test:
+	python3 -m pip install -e .[test]
+	pytest
+
 clean:
-	rm -f README.rst
+	rm -rf dist build *.egg-info
